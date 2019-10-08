@@ -1,0 +1,17 @@
+.scroll-pane .viewport {
+    -fx-background-color: crimson; /*or whatever you want*/
+  }
+
+.label {
+    -fx-text-fill: white;
+}
+
+.button {
+    -fx-background-color: lightseagreen;
+    -fx-cursor: hand;
+    -fx-text-fill: navy;
+}
+
+#lbl_celda {
+    -fx-text-fill: purple;
+}
