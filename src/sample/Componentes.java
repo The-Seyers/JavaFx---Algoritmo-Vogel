@@ -7,6 +7,7 @@ import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -88,9 +89,9 @@ public class Componentes {
 //    private Integer[] ofertas = {15, 13, 3};
 //    private Integer[] demandas = {9, 6, 7, 9};
 
-    private Integer[][] numEzq = {{27,45,37,30}, {29,40,36,28}, {31,28,50,40}, {0,0,0,0}};
-    private Integer[] ofertas = {10, 40, 20, 7};
-    private Integer[] demandas = {12, 15, 30, 20};
+//    private Integer[][] numEzq = {{27,45,37,30}, {29,40,36,28}, {31,28,50,40}, {0,0,0,0}};
+//    private Integer[] ofertas = {10, 40, 20, 7};
+//    private Integer[] demandas = {12, 15, 30, 20};
 
 
     /**
@@ -187,10 +188,10 @@ public class Componentes {
                     NOTA: En cada intervalo se espera una generación de una linea (fila) vacia
                 */
                 // Ejemplo de matriz predefinida
-                VBox unaCelda = celda(this.numEzq[i][j], numeroRandom.nextInt(100));
+//                VBox unaCelda = celda(this.numEzq[i][j], numeroRandom.nextInt(100));
 
                 // Creo un nuevo nodo el cual será incrustado en la columna que le corresponde
-                //VBox unaCelda = celda(numeroRandom.nextInt(10), numeroRandom.nextInt(100));
+                VBox unaCelda = celda(numeroRandom.nextInt(10), numeroRandom.nextInt(100));
                 // Añado a la fila nueva un nuevo conjunto de nodos (denominados como celda) los cuales formarán una nueva columna
                 fila.getChildren().add(unaCelda);
 
@@ -199,14 +200,15 @@ public class Componentes {
                     // Solo se entrará a este if en la última iteración del ciclo j (bucle de las columnas)
 
                     // Columna Oferta (TextField el cual el usuario deberá ingresar la oferta disponible)
-                    //fila.getChildren().add(ofertasDemandas(true, null));
-                    fila.getChildren().add(ofertasDemandas(true, this.ofertas[i]));
+                    fila.getChildren().add(ofertasDemandas(true, null));
+//                    fila.getChildren().add(ofertasDemandas(true, this.ofertas[i]));
 
                     // Columna ColResta (Operaciones de resta para el ejercicio de las restas de los numEsq)
                     fila.getChildren().add(celdaResta());
 
                     // Columna DemandasVisuales
-                    fila.getChildren().add(ofertasDemandasVisuales(true, this.ofertas[i]));
+//                    fila.getChildren().add(ofertasDemandasVisuales(true, this.ofertas[i]));
+                    fila.getChildren().add(ofertasDemandasVisuales(true, null));
 
                     // ESPACIADORES
                     fila.getChildren().addAll(
@@ -242,8 +244,8 @@ public class Componentes {
         filaDemandas.setAlignment(Pos.CENTER);
         // Ciclo que añadirá las celdas (columnas) de las demandas a la linea (fila) de las demandas
         for (int col = 0; col < this.columnas; col++) {
-            //filaDemandas.getChildren().add(ofertasDemandas(false, null));
-            filaDemandas.getChildren().add(ofertasDemandas(false, this.demandas[col]));
+            filaDemandas.getChildren().add(ofertasDemandas(false, null));
+//            filaDemandas.getChildren().add(ofertasDemandas(false, this.demandas[col]));
         }
         // Se añaden espaciadores para no romper la maquetación de la tabla. Estos espaciadores solo sirven para ajustar los nodos en su correspondientes columnas
         // Titular
@@ -292,9 +294,12 @@ public class Componentes {
         HBox filaVisualDemandas = new HBox(10);
         filaVisualDemandas.setId("filaVisualDemandas-" +this.filasTotales);
         filaVisualDemandas.setAlignment(Pos.CENTER);
+        // FALTA IMPLEMENTAR ESTE MÉTODO DEBIDO AL CAMBIO DEL TEXTFIELD en los numeros de la ezquina de la celda
         for (int col = 0; col < this.columnas; col++)
-            filaVisualDemandas.getChildren().add(ofertasDemandasVisuales(false, this.demandas[col]));
+            filaVisualDemandas.getChildren().add(ofertasDemandasVisuales(false, null));
         // Titular
+//        for (int col = 0; col < this.columnas; col++)
+//            filaVisualDemandas.getChildren().add(ofertasDemandasVisuales(false, null));
         Label titularVisualDemanda = new Label("DEMANDA");
         titularVisualDemanda.setPrefSize((this.anchoCelda*2) +10, this.altoCelda);
         titularVisualDemanda.setAlignment(Pos.CENTER);
@@ -351,9 +356,6 @@ public class Componentes {
                 this.crearEspaciador(false)
         );
         this.areaMatriz.getChildren().add(filaTitulares);
-
-//        for (int col = 0; col < this.columnas; col++)
-//            filaVisualDemandas.getChildren().add(ofertasDemandasVisuales(false, this.demandas[col]));
 
 
         // IMPORTANTE: Aqui ya no es necesario agregar un this.filasTotales++ puesto que ya no se van a agregar nuevas filas
@@ -562,11 +564,15 @@ public class Componentes {
         celda.setStyle("-fx-background-color:" + this.colorCelda);
 
         // Creación del nodo del número de la esquina (numEsq)
-        Label lbl_numEsq = new Label(numEsq.toString()); // Esto es debido a que numEsq proviene de un Integer y por ende es necesario convertirlo en formato texto
+        TextFieldNumber lbl_numEsq = new TextFieldNumber(); // Esto es debido a que numEsq proviene de un Integer y por ende es necesario convertirlo en formato texto
         // Se añade un estilos a la letra de este nodo (tipo de letra: serif, En negritas, Nó cursiva, tamaño de letra = 10px;
         lbl_numEsq.setFont(Font.font("serif", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 10));
+        lbl_numEsq.setBackground(Background.EMPTY);
         lbl_numEsq.setStyle("-fx-padding: 5px;" +
+                "-fx-background-color: transparent;"+
                 "-fx-text-fill: indigo;");
+        lbl_numEsq.setText(numEsq.toString());
+        //lbl_numEsq.setFocusTraversable(false); // Desactivamos el toque del tabulador para que no salte a cualquier nodo de estas caracteristicas
 
         // Creación del nodo del número central (numCen)
         //Label lbl_numCen = new Label(numCen.toString());

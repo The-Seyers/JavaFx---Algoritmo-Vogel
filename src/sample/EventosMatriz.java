@@ -5,6 +5,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 
 import java.util.*;
 
@@ -45,7 +46,8 @@ public class EventosMatriz {
      */
     public static void llenadoOfertasDemandas (Componentes comp, KeyEvent e, TextFieldNumber nodo) {
         // Filtro para que la acción pueda ser ejecutada cuando se teclee la tecla TABULADOR o el ENTER
-        if ( (e.getCode() == KeyCode.TAB) || (e.getCode() == KeyCode.ENTER) ) {
+        //if ( (e.getCode() == KeyCode.TAB) || (e.getCode() == KeyCode.ENTER) ) {
+        if ( e.getCode() == KeyCode.ENTER ) { // Se usa debido a que con el tabulador se llenarán los numeros chicos
             String texto = nodo.getText() +  e.getText(); // e.getText() Captura la última letra que se ha presionado. Sin esta asignación entonces solo obtendrá el texto sin el último carácter presionado en el teclado
 
             nodo.setDisable(true); // Deshabilito el nodo oferta o demanda
@@ -64,8 +66,31 @@ public class EventosMatriz {
             Integer numeroFila = Integer.valueOf(idFila[idFila.length -1]);
 
             if (numeroFila + 1 < comp.filasTotales) { // Compruebo que exista la fila siguiente a la actual
-                HBox filaSiguiente = (HBox) comp.areaMatriz.getChildren().get(numeroFila + 1);
+                // Envio el texto ingresado al nodo visual correspondiente
+                HBox filaActual = (HBox) comp.areaMatriz.getChildren().get(numeroFila);
+                String[] idFilaActual = filaActual.getId().split("-");
 
+                if (idFilaActual[0].equals("fila")) {
+                    Label visualOferta = (Label) filaActual.lookup("#visual-oferta");
+                    visualOferta.setText(texto);
+                } else {
+                    // Envio el texto ingresado al nodo visual correspondiente
+                    HBox visualDemandas = (HBox) comp.areaMatriz.getChildren().get(comp.filas + 2);
+                    for (int i = 0; i < visualDemandas.getChildren().size(); i++) {
+                        if (visualDemandas.getChildren().get(i) instanceof StackPane) {
+                            Label lbl_visualDemandas = (Label) ((StackPane) visualDemandas.getChildren().get(i)).getChildren().get(0);
+
+                            if (lbl_visualDemandas.getId().equals("visual-demanda"))
+                                if (lbl_visualDemandas.getText().equals("")) {
+                                    lbl_visualDemandas.setText(texto);
+                                    break; // Se rompe para que solo se agregue el texto al primer nodo vacio y no a todos los nodos Label que encuentre
+                                }
+                        }
+                    }
+                }
+
+
+                HBox filaSiguiente = (HBox) comp.areaMatriz.getChildren().get(numeroFila + 1);
                 String[] idFilaSiguente = filaSiguiente.getId().split("-");
 
                 if (idFilaSiguente[0].equals("fila")) {
@@ -76,9 +101,11 @@ public class EventosMatriz {
                         .forEach(nodoDemanda -> {
                             if (nodoDemanda instanceof TextField) { // Valido que sea una demanda
                                 TextField demanda = (TextField) nodoDemanda;
-                                if (!demanda.isDisable()) { // Valido que la demanda no se encuentre deshabilitado
-                                    demanda.requestFocus();
-                                    return; // IMPORTANTE: Si no se hace un return, entonces enviará el foco a todas las demandas vacias. Con esto logramos que solo se envie el foco a la primera demanda vacia que encuentre. Estamos deteniendo el bucle
+                                if (demanda.getId().equals("demanda")) {
+                                    if (!demanda.isDisable()) { // Valido que la demanda no se encuentre deshabilitado
+                                        demanda.requestFocus();
+                                        return; // IMPORTANTE: Si no se hace un return, entonces enviará el foco a todas las demandas vacias. Con esto logramos que solo se envie el foco a la primera demanda vacia que encuentre. Estamos deteniendo el bucle
+                                    }
                                 }
                             }
                         });

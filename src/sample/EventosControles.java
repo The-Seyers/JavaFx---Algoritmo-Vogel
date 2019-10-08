@@ -72,7 +72,7 @@ public class EventosControles {
                     lista_numCen[fila][columna] = -2190;
                 } else {
                     lista_numEsq[fila][columna] = Integer.valueOf(
-                            ((Label) celdaSeleccionada.getChildren().get(0)).getText()
+                                ((TextFieldNumber) celdaSeleccionada.getChildren().get(0)).getText()
                     );
 
                     Label numCen = (Label) celdaSeleccionada.getChildren().get(1);
@@ -87,6 +87,7 @@ public class EventosControles {
         Integer [] lista_demandas = new Integer[comp.columnas];
 
         HBox demandas = (HBox) comp.areaMatriz.lookup("#filaDemandas-" + comp.filas);
+        System.out.println(demandas);
         for (int i = 0; i < comp.columnas; i++) {
             if (demandas.getChildren().get(i) instanceof TextFieldNumber) {
                 TextFieldNumber demanda = (TextFieldNumber) demandas.getChildren().get(i);

@@ -261,8 +261,9 @@ public class Logica {
 
             if (iteracionesTotales != 0) EventosControles.resolver(this.comp);
             this.limpiarRestas();
-            this.comp.areaMatriz.getChildren().remove(this.comp.areaMatriz.lookup("#filaDemandas-"+this.comp.filas));
-            this.comp.areaMatriz.getChildren().remove(this.comp.areaMatriz.lookup("#filaRestas-"+(this.comp.filas + 1)));
+            // TODO: Hay un error cuando son matrices de mismas dimensiones
+            //this.comp.areaMatriz.getChildren().remove(this.comp.areaMatriz.lookup("#filaDemandas-"+this.comp.filas));
+            //this.comp.areaMatriz.getChildren().remove(this.comp.areaMatriz.lookup("#filaRestas-"+(this.comp.filas + 1)));
         }
     }
 
@@ -551,6 +552,7 @@ public class Logica {
 
         // Demandas
         HBox nodoColumnas = (HBox) this.comp.areaMatriz.lookup("#filaDemandas-" + this.comp.filas);
+        System.out.println("FALLO: " + nodoColumnas);
         TextFieldNumber nodoDemanda = (TextFieldNumber) nodoColumnas.getChildren().get(posColumna);
         nodoDemanda.setStyle("-fx-text-fill: crimson");
         if (diferencia == 0) {
